@@ -42,8 +42,6 @@ Returns the opposite facing. `none` remains `none`.
 
 - Uses lookup tables for constant-time conversions.
 - Rotation logic assumes facings `1..8` in clockwise order.
-- Current implementation references constants that do not match names exported
-	by `engine/vector2.lua`:
-	- `Vector2.zero` (exported as `Vector2.ZERO`)
-	- `Vector2.NORTHEAST`, `SOUTHEAST`, `SOUTHWEST`, `NORTHWEST`
-		(exported with underscores, for example `Vector2.NORTH_EAST`).
+- Uses `Vector2` constants with underscore naming (`NORTH_EAST`, `SOUTH_EAST`, `SOUTH_WEST`, `NORTH_WEST`).
+- `from_vector` mapping is aligned with screen-space Y direction (`y < 0` maps north, `y > 0` maps south).
+- `Direction.name` returns underscore-style diagonal labels to match constant naming.

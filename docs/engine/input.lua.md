@@ -22,11 +22,11 @@ When first binding an action, initializes `self.actions[action]` with
 `pressed` and `released` signals plus current/previous state.
 
 ### `Input:keypressed(key)` and `Input:keyreleased(key)`
-LÖVE callbacks for keyboard events. Updates action state and attempts to emit signals.
+LÖVE callbacks for keyboard events. Updates action state and emits signals through `self.actions[action]`.
 
-Current behavior note:
-- Signals are created under `self.actions[action]`, but emit calls currently
-	use `self.pressed` and `self.released` fields, which are not initialized.
+Emit behavior:
+- `pressed:emit(self, action)` is fired on key press.
+- `released:emit(self, action)` is fired on key release.
 
 ### Query Methods
 - `is_action_pressed(action)`: Returns true if action is currently held down.
@@ -42,8 +42,7 @@ Called each frame to snapshot current action state into previous state for frame
 - Action state is tracked separately from raw key bindings for abstraction.
 - Frame-boundary detection supports frame-sensitive logic (e.g. jump input, menu transitions).
 
-## Known Integration Issues
+## Integration Status
 
-- Signal emission path references fields that are not currently initialized
-	(`self.pressed` and `self.released`).
-- Binding signature currently differs from caller usage in `core/keybindings.lua`.
+- Signal emission path is aligned with action-scoped signal storage.
+- Binding signature is aligned with `core/keybindings.lua` (`bind(action, key)`).

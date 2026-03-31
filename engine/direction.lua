@@ -26,37 +26,37 @@ local facing = Direction.facing
 -- =============================
 
 local facing_to_vector = {
-    [facing.none] = Vector2.zero,
+    [facing.none] = Vector2.ZERO,
 
     [facing.north] = Vector2.NORTH,
-    [facing.northeast] = Vector2.NORTHEAST,
+    [facing.northeast] = Vector2.NORTH_EAST,
     [facing.east] = Vector2.EAST,
-    [facing.southeast] = Vector2.SOUTHEAST,
+    [facing.southeast] = Vector2.SOUTH_EAST,
     [facing.south] = Vector2.SOUTH,
-    [facing.southwest] = Vector2.SOUTHWEST,
+    [facing.southwest] = Vector2.SOUTH_WEST,
     [facing.west] = Vector2.WEST,
-    [facing.northwest] = Vector2.NORTHWEST,
+    [facing.northwest] = Vector2.NORTH_WEST,
 }
 
 -- =============================
--- Vector --> Facing
+-- Vector --> Facing (FIXED Y)
 -- =============================
 
 local vector_to_facing = {
     [0] = {
         [0] = facing.none,
-        [1] = facing.north,
-        [-1] = facing.south,
+        [1] = facing.south,   -- FIXED
+        [-1] = facing.north,  -- FIXED
     },
     [1] = {
         [0] = facing.east,
-        [1] = facing.northeast,
-        [-1] = facing.southeast,
+        [1] = facing.southeast,
+        [-1] = facing.northeast,
     },
     [-1] = {
         [0] = facing.west,
-        [1] = facing.northwest,
-        [-1] = facing.southwest,
+        [1] = facing.southwest,
+        [-1] = facing.northwest,
     }
 }
 
@@ -68,13 +68,13 @@ local names = {
     [facing.none] = "none",
 
     [facing.north] = "north",
-    [facing.northeast] = "northeast",
+    [facing.northeast] = "north_east",
     [facing.east] = "east",
-    [facing.southeast] = "southeast",
+    [facing.southeast] = "south_east",
     [facing.south] = "south",
-    [facing.southwest] = "southwest",
+    [facing.southwest] = "south_west",
     [facing.west] = "west",
-    [facing.northwest] = "northwest",
+    [facing.northwest] = "north_west",
 }
 
 -- =============================
