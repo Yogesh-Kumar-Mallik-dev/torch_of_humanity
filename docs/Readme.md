@@ -6,8 +6,8 @@ Provides project onboarding, runtime requirements, architecture overview, and de
 
 ## Key Points
 
-- Identifies stack: Lua + LOVE (Love2D).
-- Lists currently present modules across components/, core/, and engine/.
-- Captures known integration blockers that currently prevent stable boot.
-- Documents run command plus updated repository tree.
-- Reinforces mandatory .gitmessage-based contribution policy.
+- Identifies stack: Lua + LÖVE (Love2D).
+- Includes top-level repository badges (tech stack, license, status, and repo size).
+- Documents current project direction, implemented systems, and upcoming work.
+- Covers runtime requirements, run command, project structure, and configuration highlights.
+- Reinforces contribution workflow and .gitmessage-based commit policy.

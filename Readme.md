@@ -1,41 +1,42 @@
+[![Lua](https://img.shields.io/badge/Lua-2C2D72?logo=lua&logoColor=white)]()
+[![LÖVE](https://img.shields.io/badge/L%C3%96VE-CC3E44?logo=love2d&logoColor=white)]()
+[![License](https://img.shields.io/badge/License-Custom-blue.svg)]()
+[![Status](https://img.shields.io/badge/Status-Active%20Development-orange.svg)]()
+[![Repo Size](https://img.shields.io/github/repo-size/Yogesh-Kumar-Mallik-dev/TORCH_OF_HUMANITY)]()
 # Torch of Humanity
 
-Torch of Humanity is a 2D game project built with Lua and LOVE (Love2D).
-The repository currently includes engine modules, movement/component systems,
-input mapping, and configuration scaffolding for a pixel-art focused action game.
+Torch of Humanity is a 2D game project built with Lua and the LÖVE (Love2D) framework.
+This repository currently contains the game bootstrap, engine utilities, and core configuration systems that will drive gameplay.
 
-## Current Repository State (2026-03-31)
+## Genre and Direction
 
-Implemented modules:
+- Engine: LÖVE 11.5
+- Language: Lua
+- Visual direction: pixel-art friendly rendering with virtual resolution + scaling presets
+- Current phase: foundational architecture and systems scaffolding
 
-- Runtime bootstrap in main.lua
-- Global configuration and preset scaling in config.lua
-- Input bindings in core/keybindings.lua
-- Movement component in components/movement.lua
-- Engine utilities:
-	- engine/vector2.lua
-	- engine/signal.lua
-	- engine/input.lua
-	- engine/direction.lua
-- Third-party libs in lib/ (anim8, bump, STI, wrappers)
+## Current Status
 
-Current integration blockers:
+The project is in active early development.
 
-- core/game.lua is still empty, but main.lua expects Game:load, Game:update,
-	Game:draw, and Game.input.
-- engine/input.lua currently stores action signals in self.actions[action], but
-	key events emit via self.pressed/self.released.
-- engine/input.lua currently has no return Input at file end.
-- core/keybindings.lua calls input:bind(key, action), while engine/input.lua
-	defines Input:bind(action, key).
-- engine/direction.lua currently references Vector2.zero and diagonal constants
-	without underscores (for example Vector2.NORTHEAST).
-- components/movement.lua currently calls :normalized(), but Vector2 exports
-	:normalize().
+Implemented now:
+
+- LÖVE runtime entry points in main.lua
+- Centralized game configuration in config.lua
+- Graphics presets (low/medium/high/ultra)
+- Scaled tile/title/character sizing pipeline
+- Utility modules in engine (Vector2 math, Signal event system)
+- Included third-party libraries in lib (anim8, bump, STI, etc.)
+
+In progress / next:
+
+- Core gameplay orchestration in core/game.lua
+- Player movement and world simulation
+- Map loading, collisions, and content systems
 
 ## Requirements
 
-- LOVE 11.x
+- LÖVE 11.x installed
 
 Check installation:
 
@@ -43,18 +44,15 @@ Check installation:
 love --version
 ```
 
-## Run
+## Run the Game
 
-From project root:
+From the project root:
 
 ```bash
 love .
 ```
 
-Note: runtime boot may fail until the core/game.lua and input integration
-blockers above are resolved.
-
-## Repository Structure
+## Project Structure
 
 ```text
 .
@@ -78,22 +76,42 @@ blockers above are resolved.
 
 ## Configuration Highlights
 
-config.lua includes:
+config.lua controls:
 
-- Resolution presets (low, medium, high, ultra)
-- Virtual resolution and tile scaling
-- Derived character movement values:
-	- max_speed, acceleration, friction
-	- dash_distance, dash_speed
+- Window size and title
+- Virtual resolution
+- Graphics quality presets
+- Runtime-derived tile, title, and character render sizes
 
-## Contribution Standard
+Default preset is medium. You can switch presets in code through Config:applyPresets(...).
 
-- Always use the .gitmessage template.
-- Follow previous commit structure exactly.
-- PRs that do not follow commit structure are auto-rejected.
-- Mirror all meaningful code changes in docs/.
+## Development Notes
+
+- Keep game-facing constants in config.lua to avoid hard-coded values.
+- Use engine utilities for reusable logic (math/events).
+- Place core gameplay flow inside core/game.lua.
+
+## Contributing
+
+Contributions are welcome as the game systems expand.
+
+Suggested workflow:
+
+1. Create a feature branch.
+2. Implement focused, testable changes.
+3. Always use the repository .gitmessage template when creating commits.
+4. Refer to previous commits for exact message structure and formatting consistency.
+5. Pull requests that do not follow this commit structure will be automatically rejected.
+6. Update docs in docs/ when module behavior changes.
+7. Open a pull request with a short summary and screenshots/gifs for visual changes.
 
 ## License
 
-This project uses a custom four-layer ownership model license.
-See LICENSE.md for full terms.
+This project uses a custom 4-layer ownership license:
+
+- Layer 1: Founder
+- Layer 2: Core Team
+- Layer 3: Contributors
+- Layer 4: Community Users
+
+See LICENSE for the full terms.
