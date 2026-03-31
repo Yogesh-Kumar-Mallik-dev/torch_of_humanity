@@ -1,35 +1,17 @@
 -- =========================================
 -- CONFIG MODULE
--- Central place for all game settings
 -- =========================================
 
 local Config = {}
 
 -- =========================================
 -- GRAPHICS PRESETS
--- Controls resolution + scaling
 -- =========================================
 Config.presets = {
-    low = {
-        width = 854,
-        height = 480,
-        scale = 1,
-    },
-    medium = {
-        width = 1280,
-        height = 720,
-        scale = 2,
-    },
-    high = {
-        width = 1920,
-        height = 1080,
-        scale = 3,
-    },
-    ultra = {
-        width = 2560,
-        height = 1440,
-        scale = 4,
-    },
+    low = { width = 854, height = 480, scale = 1 },
+    medium = { width = 1280, height = 720, scale = 2 },
+    high = { width = 1920, height = 1080, scale = 3 },
+    ultra = { width = 2560, height = 1440, scale = 4 },
 }
 
 -- =========================================
@@ -37,46 +19,56 @@ Config.presets = {
 -- =========================================
 Config.window = {
     title = "Torch of Humanity",
-    width = 0,      -- Will be set by preset
-    height = 0,     -- Will be set by preset
+    width = 0,
+    height = 0,
     fullscreen = false,
     vsync = true,
 }
 
 -- =========================================
--- TILE SETTINGS (IMPORTANT: was missing before)
+-- TILE SETTINGS
 -- =========================================
 Config.tile = {
-    original_size = 16, -- Base sprite size (pixels)
-    scale = 1,          -- Will be set by preset
-    render_size = 16,   -- Final size after scaling
+    original_size = 16,
+    scale = 1,
+    render_size = 16,
 }
 
 -- =========================================
--- TITLE TEXT SETTINGS
+-- TITLE TEXT
 -- =========================================
 Config.title = {
-    size = 16,          -- Base font size
-    scale = 1,
-    render_size = 16,   -- Final scaled size
-    color = {1, 1, 1},  -- RGB (white)
+    size = 16,
+    render_size = 16,
+    color = {1, 1, 1},
 }
 
 -- =========================================
 -- CHARACTER SETTINGS
 -- =========================================
 Config.character = {
-    max_speed = 200,
-    acceleration = 600,
-    friction = 800,
+    tiles_per_second = 6,
+
+    accel_time = 0.2,
+    stop_time = 0.1,
+
+    dash_distance_tiles = 3,
+    dash_time = 0.15,
+
     original_size = 16,
     render_size = 16,
     scale = 1,
+
+    -- computed
+    max_speed = 0,
+    acceleration = 0,
+    friction = 0,
+    dash_distance = 0,
+    dash_speed = 0,
 }
 
 -- =========================================
 -- WORLD SETTINGS
--- (Number of tiles visible in virtual resolution)
 -- =========================================
 Config.world = {
     tile_width = 0,
@@ -84,7 +76,7 @@ Config.world = {
 }
 
 -- =========================================
--- VIRTUAL RESOLUTION (for pixel-perfect scaling)
+-- VIRTUAL RESOLUTION
 -- =========================================
 Config.virtual = {
     width = 320,
@@ -93,44 +85,58 @@ Config.virtual = {
 
 -- =========================================
 -- APPLY GRAPHICS PRESET
--- Updates all dependent values
 -- =========================================
 function Config:applyPresets(preset)
-    -- Store current preset
     self.current = preset
 
-    -- Set window resolution
+    -- Window
     self.window.width = preset.width
     self.window.height = preset.height
 
-    -- =====================
-    -- TILE SCALING
-    -- =====================
+    -- Tile
     self.tile.scale = preset.scale
     self.tile.render_size = self.tile.original_size * self.tile.scale
 
-    -- =====================
-    -- TITLE SCALING
-    -- =====================
+    -- Title
     self.title.render_size = self.title.size * self.tile.scale
 
-    -- =====================
-    -- CHARACTER SCALING
-    -- =====================
+    -- Character scale
     self.character.scale = preset.scale
-    self.character.render_size = self.character.original_size * self.character.scale
+    self.character.render_size =
+        self.character.original_size * self.character.scale
 
-    -- =====================
-    -- WORLD TILE COUNT
-    -- (How many tiles fit on screen)
-    -- =====================
-    self.world.tile_width = math.floor(self.virtual.width / self.tile.render_size)
-    self.world.tile_height = math.floor(self.virtual.height / self.tile.render_size)
+    -- =====================================
+    -- MOVEMENT (tile-based)
+    -- =====================================
+    self.character.max_speed =
+        self.character.tiles_per_second * self.tile.render_size
+
+    self.character.acceleration =
+        self.character.max_speed / self.character.accel_time
+
+    self.character.friction =
+        self.character.max_speed / self.character.stop_time
+
+    -- =====================================
+    -- DASH (distance-based)
+    -- =====================================
+    self.character.dash_distance =
+        self.character.dash_distance_tiles * self.tile.render_size
+
+    self.character.dash_speed =
+        self.character.dash_distance / self.character.dash_time
+
+    -- =====================================
+    -- WORLD
+    -- =====================================
+    self.world.tile_width =
+        math.floor(self.virtual.width / self.tile.render_size)
+
+    self.world.tile_height =
+        math.floor(self.virtual.height / self.tile.render_size)
 end
 
--- =========================================
--- APPLY DEFAULT PRESET (IMPORTANT: use :)
--- =========================================
+-- Default preset
 Config:applyPresets(Config.presets.medium)
 
 return Config
