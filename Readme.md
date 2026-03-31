@@ -1,3 +1,8 @@
+[![Lua](https://img.shields.io/badge/Lua-2C2D72?logo=lua&logoColor=white)]()
+[![LÖVE](https://img.shields.io/badge/L%C3%96VE-CC3E44?logo=love2d&logoColor=white)]()
+[![License](https://img.shields.io/badge/License-Custom-blue.svg)]()
+[![Status](https://img.shields.io/badge/Status-Active%20Development-orange.svg)]()
+[![Repo Size](https://img.shields.io/github/repo-size/Yogesh-Kumar-Mallik-dev/TORCH_OF_HUMANITY)]()
 # Torch of Humanity
 
 Torch of Humanity is a 2D game project built with Lua and the LÖVE (Love2D) framework.

@@ -7,6 +7,7 @@ Provides project onboarding, runtime requirements, architecture overview, and de
 ## Key Points
 
 - Identifies stack: Lua + LÖVE.
+- Includes repository-facing status badges (Lua, LÖVE, license, development status, and repo size).
 - Lists current implemented systems and upcoming development targets.
 - Documents run command and project structure.
 - Reinforces contribution workflow and commit-format expectations.
