@@ -84,3 +84,5 @@ function Input:update()
         self.previous[action] = state
     end
 end
+
+return Input

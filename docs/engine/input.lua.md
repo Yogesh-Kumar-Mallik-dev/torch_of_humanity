@@ -9,7 +9,7 @@ Engine-level input abstraction module providing action-based key binding and sta
 - Module defines Input constructor, binding table, action state tracking,
   per-frame state snapshot logic, and key event handlers.
 - Dependency: requires engine.signal for event dispatch.
-- Current file does not return the Input table at end of module.
+- Module now returns `Input` at the end for proper `require(...)` consumption.
 
 ## API
 
@@ -44,7 +44,6 @@ Called each frame to snapshot current action state into previous state for frame
 
 ## Known Integration Issues
 
-- Missing `return Input` at end of module.
 - Signal emission path references fields that are not currently initialized
 	(`self.pressed` and `self.released`).
 - Binding signature currently differs from caller usage in `core/keybindings.lua`.
