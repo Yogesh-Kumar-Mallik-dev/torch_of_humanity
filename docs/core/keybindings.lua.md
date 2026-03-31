@@ -7,7 +7,7 @@ Defines default gameplay key-to-action bindings by loading mappings into the inp
 ## API
 
 ### Keybindings.load(input)
-Applies a standard set of controls using `input:bind(key, action)`.
+Applies a standard set of controls using `input:bind(action, key)`.
 
 ## Default Bindings
 
@@ -32,6 +32,4 @@ Abilities:
 ## Notes
 
 - Centralizes default controls in one module for easier future rebinding support.
-- Current implementation calls `input:bind(key, action)`.
-- `engine/input.lua` currently defines `Input:bind(action, key)`.
-- This parameter order mismatch is a known integration issue until one side is aligned.
+- Uses action-first binding order consistent with `engine/input.lua`.

@@ -7,7 +7,6 @@ Vector2.__index = Vector2
 
 -- =========================================
 -- CONSTRUCTOR
--- Creates a new vector
 -- =========================================
 function Vector2.new(x, y)
     local self = setmetatable({
@@ -27,7 +26,6 @@ end
 
 -- =========================================
 -- LOCK FUNCTION (IMMUTABLE VECTOR)
--- Prevents modification of vector
 -- =========================================
 local function lock(vector)
     return setmetatable({}, {
@@ -43,21 +41,17 @@ local function lock(vector)
     })
 end
 
-
 -- =========================================
--- Constants
--- Predefined vectors for common directions
+-- CONSTANTS
 -- =========================================
 
 Vector2.ZERO = lock(Vector2.new(0, 0))
 
--- Cardinal directions (immutable)
 Vector2.NORTH = lock(Vector2.new(0, -1))
 Vector2.SOUTH = lock(Vector2.new(0, 1))
-Vector2.WEST = lock(Vector2.new(-1, 0))
-Vector2.EAST = lock(Vector2.new(1, 0))
+Vector2.WEST  = lock(Vector2.new(-1, 0))
+Vector2.EAST  = lock(Vector2.new(1, 0))
 
--- Diagonal directions (immutable, normalized)
 local INVT_SQRT2 = 1 / math.sqrt(2)
 
 Vector2.NORTH_EAST = lock(Vector2.new(INVT_SQRT2, -INVT_SQRT2))
@@ -65,19 +59,19 @@ Vector2.NORTH_WEST = lock(Vector2.new(-INVT_SQRT2, -INVT_SQRT2))
 Vector2.SOUTH_EAST = lock(Vector2.new(INVT_SQRT2, INVT_SQRT2))
 Vector2.SOUTH_WEST = lock(Vector2.new(-INVT_SQRT2, INVT_SQRT2))
 
--- alias (Godot-style)
-Vector2.UP = Vector2.NORTH
-Vector2.DOWN = Vector2.SOUTH
-Vector2.LEFT = Vector2.WEST
+-- Aliases
+Vector2.UP    = Vector2.NORTH
+Vector2.DOWN  = Vector2.SOUTH
+Vector2.LEFT  = Vector2.WEST
 Vector2.RIGHT = Vector2.EAST
 
-Vector2.UP_RIGHT = Vector2.NORTH_EAST
-Vector2.UP_LEFT = Vector2.NORTH_WEST
+Vector2.UP_RIGHT   = Vector2.NORTH_EAST
+Vector2.UP_LEFT    = Vector2.NORTH_WEST
 Vector2.DOWN_RIGHT = Vector2.SOUTH_EAST
-Vector2.DOWN_LEFT = Vector2.SOUTH_WEST
+Vector2.DOWN_LEFT  = Vector2.SOUTH_WEST
 
 -- ========================================
--- Core Methods 
+-- CORE METHODS
 -- ========================================
 
 function Vector2:copy()
@@ -96,6 +90,7 @@ function Vector2:length_squared()
     return self.x * self.x + self.y * self.y
 end
 
+-- 🔥 MAIN NORMALIZE
 function Vector2:normalize()
     local len = self:length()
     if len > 0 then
@@ -103,6 +98,11 @@ function Vector2:normalize()
     else
         return Vector2.ZERO
     end
+end
+
+-- 🔥 ALIAS (FIX FOR YOUR ERROR)
+function Vector2:normalized()
+    return self:normalize()
 end
 
 function Vector2:distance_to(vector)
@@ -148,7 +148,7 @@ function Vector2:clamped(max_length)
 end
 
 -- =========================================
--- Operator Overloading
+-- OPERATOR OVERLOADING
 -- =========================================
 
 function Vector2.__add(a, b)
@@ -165,7 +165,7 @@ function Vector2.__mul(a, b)
     elseif type(b) == "number" then
         return Vector2.new(b * a.x, b * a.y)
     else
-       return Vector2.new(a.x * b.x, a.y * b.y)
+        return Vector2.new(a.x * b.x, a.y * b.y)
     end
 end
 

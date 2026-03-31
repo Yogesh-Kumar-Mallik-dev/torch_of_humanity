@@ -41,9 +41,9 @@ function Input:keypressed(key)
 
     self.current[action] = true
 
-    local a = self
+    local a = self.actions[action] --  FIX
     if a then
-        a.pressed:emit(self, key)
+        a.pressed:emit(self, action)
     end
 end
 
@@ -53,9 +53,9 @@ function Input:keyreleased(key)
 
     self.current[action] = false
 
-    local a = self
+    local a = self.actions[action] --  FIX
     if a then
-        a.released:emit(self, key)
+        a.released:emit(self, action)
     end
 end
 

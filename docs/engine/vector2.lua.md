@@ -11,7 +11,7 @@ Status: utility module expanded with directional constants, math helpers, and op
 - Constructors and constants:
 	- `new`, `copy`, `ZERO`, `NORTH/SOUTH/EAST/WEST`, diagonals, direction aliases.
 - Scalar and vector math:
-	- `length`, `length_squared`, `normalize`, `dot`, `angle`, `rotate`, `lerp`, `clamped`.
+	- `length`, `length_squared`, `normalize`, `normalized` (alias), `dot`, `angle`, `rotate`, `lerp`, `clamped`.
 - Spatial relations:
 	- `distance_to`, `distance_squared_to`, `direction_to`, `is_zero`.
 - Operator overloads:

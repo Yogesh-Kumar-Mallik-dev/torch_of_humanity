@@ -1,34 +1,37 @@
 local Keybindings = {}
 
 function Keybindings.load(input)
-  input:bind("w", "move_up")
-  input:bind("s", "move_down")
-  input:bind("a", "move_left")
-  input:bind("d", "move_right")
+  -- Movement (WASD)
+  input:bind("move_up", "w")
+  input:bind("move_down", "s")
+  input:bind("move_left", "a")
+  input:bind("move_right", "d")
 
-  input:bind("up", "move_up")
-  input:bind("down", "move_down")
-  input:bind("left", "move_left")
-  input:bind("right", "move_right")
+  -- Movement (Arrow keys)
+  input:bind("move_up", "up")
+  input:bind("move_down", "down")
+  input:bind("move_left", "left")
+  input:bind("move_right", "right")
 
-  input:bind("space", "attack")
-  input:bind("lshift", "dash")
+  -- Actions
+  input:bind("attack", "space")
+  input:bind("dash", "lshift")
 
-  input:bind("x", "menu")
-  input:bind("m", "map")
+  input:bind("menu", "x")
+  input:bind("map", "m")
+  input:bind("interact", "f")
 
-  input:bind("f", "interact")
-
-  input:bind("1", "ability1")
-  input:bind("2", "ability2")
-  input:bind("3", "ability3")
-  input:bind("4", "ability4")
-  input:bind("5", "ability5")
-  input:bind("6", "ability6")
-  input:bind("7", "ability7")
-  input:bind("8", "ability8")
-  input:bind("9", "ability9")
-  input:bind("0", "ability10")
+  -- Abilities
+  input:bind("ability1", "1")
+  input:bind("ability2", "2")
+  input:bind("ability3", "3")
+  input:bind("ability4", "4")
+  input:bind("ability5", "5")
+  input:bind("ability6", "6")
+  input:bind("ability7", "7")
+  input:bind("ability8", "8")
+  input:bind("ability9", "9")
+  input:bind("ability10", "0")
 end
 
 return Keybindings
