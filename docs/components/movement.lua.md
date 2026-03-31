@@ -68,3 +68,7 @@ Per-frame update pipeline:
 - Designed for tile-scaled movement values supplied by config.
 - Uses signal-based state emission to keep movement consumers decoupled.
 - Dash now completes by traveled distance instead of fixed timer duration.
+- Current implementation uses `:normalized()` in two places, while
+	`engine/vector2.lua` currently exposes `:normalize()`.
+- Successful runtime use depends on alignment with `engine/direction.lua` and
+	`engine/input.lua` integration fixes.

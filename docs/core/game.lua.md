@@ -1,10 +1,11 @@
 # core/game.lua
 
-Status: scaffold file created.
+Status: empty scaffold (no module implementation).
 
 ## Summary
-- Core game module file has been initialized as a placeholder.
-- Game state/update orchestration is not implemented yet.
+- File exists but has no Lua code yet.
+- Main runtime currently expects this module to expose game lifecycle methods.
 
 ## Impact
-- Defines a stable location for the core game orchestration layer.
+- Marks the target location for game orchestration, but this is currently the
+	primary blocker for a successful runtime boot.

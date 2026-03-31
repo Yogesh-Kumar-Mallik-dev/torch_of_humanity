@@ -6,8 +6,10 @@ Engine-level input abstraction module providing action-based key binding and sta
 
 ## Current State
 
-- Full Input class implementation with lifecycle and query API.
+- Module defines Input constructor, binding table, action state tracking,
+  per-frame state snapshot logic, and key event handlers.
 - Dependency: requires engine.signal for event dispatch.
+- Current file does not return the Input table at end of module.
 
 ## API
 
@@ -15,10 +17,16 @@ Engine-level input abstraction module providing action-based key binding and sta
 Creates a new Input system instance with empty bindings and action state tracking.
 
 ### `Input:bind(action, key)`
-Binds a string action name to a keyboard key. Creates Signal emitters for `pressed` and `released` events.
+Binds an action name to a key through `self.bindings[key] = action`.
+When first binding an action, initializes `self.actions[action]` with
+`pressed` and `released` signals plus current/previous state.
 
 ### `Input:keypressed(key)` and `Input:keyreleased(key)`
-LÖVE callbacks for keyboard events. Updates action state and emits the corresponding Signal for connected listeners.
+LÖVE callbacks for keyboard events. Updates action state and attempts to emit signals.
+
+Current behavior note:
+- Signals are created under `self.actions[action]`, but emit calls currently
+	use `self.pressed` and `self.released` fields, which are not initialized.
 
 ### Query Methods
 - `is_action_pressed(action)`: Returns true if action is currently held down.
@@ -33,3 +41,10 @@ Called each frame to snapshot current action state into previous state for frame
 - Signal-based event emission allows decoupled gameplay code to listen to input changes.
 - Action state is tracked separately from raw key bindings for abstraction.
 - Frame-boundary detection supports frame-sensitive logic (e.g. jump input, menu transitions).
+
+## Known Integration Issues
+
+- Missing `return Input` at end of module.
+- Signal emission path references fields that are not currently initialized
+	(`self.pressed` and `self.released`).
+- Binding signature currently differs from caller usage in `core/keybindings.lua`.

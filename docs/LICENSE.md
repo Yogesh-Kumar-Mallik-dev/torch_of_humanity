@@ -9,4 +9,6 @@ Documents the THFO-1.1 four-layer ownership model and project license terms.
 - Defines founder, core team, contributor, and community user roles.
 - Clarifies project-scope authority and contributor ownership/licensing boundaries.
 - Sets redistribution, attribution, warranty, and termination clauses.
+- Includes public-release credit obligations for Founder, Core Team, and Contributors.
+- Includes name-display opt-out path via written notice (email or other binding document).
 - Declares this license as source-available, not OSI open-source.

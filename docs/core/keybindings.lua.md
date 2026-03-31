@@ -32,4 +32,6 @@ Abilities:
 ## Notes
 
 - Centralizes default controls in one module for easier future rebinding support.
-- Depends on the input module exposing `bind(key, action)` semantics.
+- Current implementation calls `input:bind(key, action)`.
+- `engine/input.lua` currently defines `Input:bind(action, key)`.
+- This parameter order mismatch is a known integration issue until one side is aligned.

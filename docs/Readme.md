@@ -6,8 +6,8 @@ Provides project onboarding, runtime requirements, architecture overview, and de
 
 ## Key Points
 
-- Identifies stack: Lua + LÖVE.
-- Includes repository-facing status badges (Lua, LÖVE, license, development status, and repo size).
-- Lists current implemented systems and upcoming development targets.
-- Documents run command and project structure.
-- Reinforces contribution workflow and commit-format expectations.
+- Identifies stack: Lua + LOVE (Love2D).
+- Lists currently present modules across components/, core/, and engine/.
+- Captures known integration blockers that currently prevent stable boot.
+- Documents run command plus updated repository tree.
+- Reinforces mandatory .gitmessage-based contribution policy.
