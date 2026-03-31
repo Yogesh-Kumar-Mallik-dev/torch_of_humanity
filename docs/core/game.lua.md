@@ -10,8 +10,9 @@ used by main runtime callbacks.
 - Configures window title, size, fullscreen, and vsync from Config.
 - Initializes input system through `engine.input`.
 - Loads key bindings using `core.keybindings`.
-- Creates a temporary default state table with `update` and `draw` handlers.
-- Draws placeholder runtime text to confirm loop execution.
+- Creates a `Player` entity positioned at the center of the current window.
+- Updates player simulation each frame with input and delta time.
+- Draws the player each frame during render pass.
 
 ## API
 
@@ -24,8 +25,9 @@ used by main runtime callbacks.
 - `config`
 - `engine.input`
 - `core.keybindings`
+- `entity.player.player`
 
 ## Impact
 
-- Removes empty-scaffold blocker and establishes a runnable core lifecycle shell
-  for future state/gameplay integration.
+- Replaces placeholder game-loop behavior with a concrete entity-driven runtime
+  flow, establishing baseline gameplay update/render orchestration.

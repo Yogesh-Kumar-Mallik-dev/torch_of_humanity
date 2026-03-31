@@ -1,11 +1,11 @@
 local Config = require("config")
 local Input = require("engine.input")
 local Keybindings = require("core.keybindings")
+local Player = require("entity.player.player")
 
 local Game = {}
 
 function Game:load()
-    -- Window setup (FIXED)
     love.window.setTitle(Config.window.title)
     love.window.setMode(
         Config.window.width,
@@ -20,24 +20,24 @@ function Game:load()
     self.input = Input:new()
     Keybindings.load(self.input)
 
-    -- TEMP: basic state (so game doesn't crash)
-    self.state = {
-        update = function(_, dt, input)
-            -- placeholder
-        end,
-        draw = function()
-            love.graphics.print("Game Running ✅", 20, 20)
-        end
-    }
+    -- 🔥 CREATE PLAYER (REAL GAME STARTS HERE)
+    self.player = Player.new(
+        Config.window.width / 2,
+        Config.window.height / 2,
+        Config.character
+    )
 end
 
 function Game:update(dt)
-    self.state:update(dt, self.input)
+    -- 🔥 UPDATE PLAYER
+    self.player:update(self.input, dt)
+
     self.input:update()
 end
 
 function Game:draw()
-    self.state:draw()
+    -- 🔥 DRAW PLAYER
+    self.player:draw()
 end
 
 return Game
