@@ -1,11 +1,31 @@
 # core/game.lua
 
-Status: empty scaffold (no module implementation).
+## Purpose
 
-## Summary
-- File exists but has no Lua code yet.
-- Main runtime currently expects this module to expose game lifecycle methods.
+Primary game orchestration module implementing load/update/draw lifecycle hooks
+used by main runtime callbacks.
+
+## Current Behavior
+
+- Configures window title, size, fullscreen, and vsync from Config.
+- Initializes input system through `engine.input`.
+- Loads key bindings using `core.keybindings`.
+- Creates a temporary default state table with `update` and `draw` handlers.
+- Draws placeholder runtime text to confirm loop execution.
+
+## API
+
+- `Game:load()`
+- `Game:update(dt)`
+- `Game:draw()`
+
+## Dependencies
+
+- `config`
+- `engine.input`
+- `core.keybindings`
 
 ## Impact
-- Marks the target location for game orchestration, but this is currently the
-	primary blocker for a successful runtime boot.
+
+- Removes empty-scaffold blocker and establishes a runnable core lifecycle shell
+  for future state/gameplay integration.
