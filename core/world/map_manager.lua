@@ -1,126 +1,104 @@
-local Direction = require("engine.direction")
-
 local MapManager = {}
 MapManager.__index = MapManager
 
--- =============================
--- Constructor
--- =============================
-
-function MapManager.new(map_database)
+function MapManager.new(database)
     local self = setmetatable({}, MapManager)
 
-    self.database = map_database
-    self.current_map_id = nil
+    self.database = database
+    self.loaded = {}
 
-    -- Active maps (3x3 grid)
-    self.loaded = {}  -- [map_id] = map_data
+    self.map_w = 320
+    self.map_h = 180
 
     return self
 end
 
 -- =============================
--- Load Initial Map
+-- Helper
 -- =============================
 
-function MapManager:load_start(map_id)
-    self.current_map_id = map_id
-    self:refresh()
+local function key(x, y)
+    return x .. "," .. y
 end
 
 -- =============================
--- Refresh 3x3 Grid
+-- Find map from grid
 -- =============================
 
-function MapManager:refresh()
-    self.loaded = {}
-
-    local center = self.database[self.current_map_id]
-    if not center then return end
-
-    self:_load_map(center.id)
-
-    -- load neighbors (1 layer)
-    for _, neighbor_id in pairs(center.neighbors) do
-        if neighbor_id then
-            self:_load_map(neighbor_id)
-
-            -- load diagonals
-            local neighbor = self.database[neighbor_id]
-            if neighbor then
-                for _, sub_id in pairs(neighbor.neighbors) do
-                    if sub_id then
-                        self:_load_map(sub_id)
-                    end
-                end
-            end
+function MapManager:get_map_at(gx, gy)
+    for _, map in pairs(self.database) do
+        if map.grid and map.grid.x == gx and map.grid.y == gy then
+            return map
         end
     end
 end
 
 -- =============================
--- Internal Load
+-- Update (dynamic 3x3 loading)
 -- =============================
 
-function MapManager:_load_map(map_id)
-    if self.loaded[map_id] then return end
+function MapManager:update(player)
+    local px = player.position.x
+    local py = player.position.y
 
-    local map = self.database[map_id]
-    if not map then return end
+    local cx = math.floor(px / self.map_w)
+    local cy = math.floor(py / self.map_h)
 
-    self.loaded[map_id] = map
+    local needed = {}
+
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            local gx = cx + dx
+            local gy = cy + dy
+
+            local map = self:get_map_at(gx, gy)
+            if map then
+                local k = key(gx, gy)
+                needed[k] = true
+
+                if not self.loaded[k] then
+                    self.loaded[k] = {
+                        data = map,
+                        gx = gx,
+                        gy = gy
+                    }
+                end
+            end
+        end
+    end
+
+    -- unload far maps
+    for k, _ in pairs(self.loaded) do
+        if not needed[k] then
+            self.loaded[k] = nil
+        end
+    end
 end
 
 -- =============================
--- Move to New Map
+-- Draw ALL loaded maps
 -- =============================
 
-function MapManager:move(direction)
-    local current = self.database[self.current_map_id]
-    if not current then return end
+function MapManager:draw_world()
+    for _, map in pairs(self.loaded) do
+        local x = map.gx * self.map_w
+        local y = map.gy * self.map_h
 
-    local next_id = current.neighbors[Direction.name(direction)]
-    if not next_id then return end
+        love.graphics.setColor(map.data.color)
+        love.graphics.rectangle("fill", x, y, self.map_w, self.map_h)
+    end
 
-    self.current_map_id = next_id
-    self:refresh()
+    love.graphics.setColor(1,1,1)
 end
 
--- =============================
---  DRAW BACKGROUND (NEW)
--- =============================
-
-function MapManager:draw_background()
-    local current = self.database[self.current_map_id]
-    if not current then return end
-
-    -- fallback color if missing
-    local color = current.color or {0, 0, 0}
-
-    love.graphics.setColor(color)
-    love.graphics.rectangle(
-        "fill",
-        0,
-        0,
-        love.graphics.getWidth(),
-        love.graphics.getHeight()
-    )
-
-    love.graphics.setColor(1, 1, 1) -- reset
-end
-
--- =============================
--- Debug Draw
--- =============================
-
+-- Debug
 function MapManager:draw()
     local y = 20
-
-    love.graphics.print("Current Map: " .. self.current_map_id, 20, y)
+    love.graphics.print("Loaded maps:", 20, y)
     y = y + 20
 
-    for id, _ in pairs(self.loaded) do
-        love.graphics.print("Loaded: " .. id, 20, y)
+    for k, _ in pairs(self.loaded) do
+        love.graphics.print(k, 20, y)
         y = y + 20
     end
 end

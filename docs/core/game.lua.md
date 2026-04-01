@@ -10,13 +10,14 @@ used by main runtime callbacks.
 - Configures window title, size, fullscreen, and vsync from Config.
 - Initializes input system through `engine.input`.
 - Loads key bindings using `core.keybindings`.
-- Creates a `Player` entity positioned at the center of the current window.
+- Creates a `Player` entity in world-space at `(0, 0)`.
 - Initializes map systems through `core.world.map_manager` and `core.world.map_database`.
-- Loads starting map and renders active map background color each frame.
+- Initializes camera system through `core.camera`.
 - Updates player simulation each frame with input and delta time.
-- Performs automatic map transitions when player crosses screen bounds.
-- Draws the player each frame during render pass.
-- Draws map-manager debug data for current/loaded map visibility.
+- Updates map loading window around player position through map manager.
+- Moves camera to follow player position each frame.
+- Draws world-space maps and player under camera transform.
+- Draws map-manager debug data in screen-space after camera is cleared.
 
 ## API
 
@@ -32,9 +33,8 @@ used by main runtime callbacks.
 - `entity.player.player`
 - `core.world.map_manager`
 - `core.world.map_database`
-- `engine.direction`
+- `core.camera`
 
 ## Impact
 
-- Extends runtime orchestration with functional map loading, transitions, and
-  per-map background rendering while keeping player lifecycle integration.
+- Provides a world-space render/update flow where camera tracking and dynamic map streaming are coordinated through the game loop.
