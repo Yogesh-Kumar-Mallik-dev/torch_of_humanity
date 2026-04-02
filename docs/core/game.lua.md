@@ -11,7 +11,7 @@ used by main runtime callbacks.
 - Initializes input system through `engine.input`.
 - Loads key bindings using `core.keybindings`.
 - Creates a `Player` entity in world-space at `(0, 0)`.
-- Initializes map systems through `core.world.map_manager` and `core.world.map_database`.
+- Initializes world systems through `core.world.world_data` and `core.world.map_manager`.
 - Initializes camera system through `core.camera`.
 - Updates player simulation each frame with input and delta time.
 - Updates map loading window around player position through map manager.
@@ -32,7 +32,7 @@ used by main runtime callbacks.
 - `core.keybindings`
 - `entity.player.player`
 - `core.world.map_manager`
-- `core.world.map_database`
+- `core.world.world_data`
 - `core.camera`
 
 ## Impact

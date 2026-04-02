@@ -1,55 +1,26 @@
-return {
-    center = {
-        id = "center",
-        color = {0.2, 0.2, 0.2},
-        grid = {x = 0, y = 0},
-    },
+local MapDatabase = {}
+MapDatabase.__index = MapDatabase
 
-    north = {
-        id = "north",
-        color = {0.2, 0.4, 1},
-        grid = {x = 0, y = -1},
-    },
+local function key(x, y)
+    return x .. "," .. y
+end
 
-    south = {
-        id = "south",
-        color = {0.2, 1, 0.4},
-        grid = {x = 0, y = 1},
-    },
+function MapDatabase:new()
+    return setmetatable({
+        maps = {}
+    }, MapDatabase)
+end
 
-    east = {
-        id = "east",
-        color = {1, 0.4, 0.2},
-        grid = {x = 1, y = 0},
-    },
+function MapDatabase:add(map)
+    local k = key(map.grid.x, map.grid.y)
 
-    west = {
-        id = "west",
-        color = {1, 0.2, 0.6},
-        grid = {x = -1, y = 0},
-    },
+    assert(not self.maps[k], "Duplicate map at " .. k)
 
-    north_east = {
-        id = "north_east",
-        color = {0.5, 0.5, 1},
-        grid = {x = 1, y = -1},
-    },
+    self.maps[k] = map
+end
 
-    north_west = {
-        id = "north_west",
-        color = {0.5, 0.5, 0.8},
-        grid = {x = -1, y = -1},
-    },
+function MapDatabase:get(x, y)
+    return self.maps[key(x, y)]
+end
 
-    south_east = {
-        id = "south_east",
-        color = {0.5, 1, 0.5},
-        grid = {x = 1, y = 1},
-    },
-
-    south_west = {
-        id = "south_west",
-        color = {0.8, 0.5, 0.5},
-        grid = {x = -1, y = 1},
-    },
-}
+return MapDatabase

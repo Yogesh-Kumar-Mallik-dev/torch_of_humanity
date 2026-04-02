@@ -16,28 +16,19 @@ function MapManager.new(database)
 end
 
 -- =============================
--- Find map by grid position
+-- O(1) lookup
 -- =============================
-
 function MapManager:get_map_at(gx, gy)
-    for _, map in pairs(self.database) do
-        if map.grid and map.grid.x == gx and map.grid.y == gy then
-            return map
-        end
-    end
-
-    return nil -- no fallback (clean)
+    return self.database:get(gx, gy)
 end
 
 -- =============================
--- Update (dynamic 3x3 loading)
+-- Update (3x3 streaming)
 -- =============================
-
 function MapManager:update(player)
     local px = player.position.x
     local py = player.position.y
 
-    -- 🔥 find current chunk
     local cx = math.floor(px / self.map_w)
     local cy = math.floor(py / self.map_h)
 
@@ -49,25 +40,23 @@ function MapManager:update(player)
             local gy = cy + dy
 
             local map = self:get_map_at(gx, gy)
+
             if map then
                 local key = gx .. "," .. gy
-
                 needed[key] = true
 
                 if not self.loaded[key] then
-                    self.loaded[key] = {
-                        data = map,
-                        gx = gx,
-                        gy = gy
-                    }
+                    map:onLoad()
+                    self.loaded[key] = map
                 end
             end
         end
     end
 
-    -- 🔥 unload unused
-    for key, _ in pairs(self.loaded) do
+    -- unload unused
+    for key, map in pairs(self.loaded) do
         if not needed[key] then
+            map:onUnload()
             self.loaded[key] = nil
         end
     end
@@ -76,13 +65,12 @@ end
 -- =============================
 -- Draw world
 -- =============================
-
 function MapManager:draw_world()
     for _, map in pairs(self.loaded) do
-        local x = map.gx * self.map_w
-        local y = map.gy * self.map_h
+        local x = map.grid.x * self.map_w
+        local y = map.grid.y * self.map_h
 
-        love.graphics.setColor(map.data.color)
+        love.graphics.setColor(map.color)
         love.graphics.rectangle("fill", x, y, self.map_w, self.map_h)
     end
 
@@ -92,14 +80,13 @@ end
 -- =============================
 -- Debug
 -- =============================
-
 function MapManager:draw()
     local y = 20
     love.graphics.print("Loaded maps:", 20, y)
     y = y + 20
 
-    for k, _ in pairs(self.loaded) do
-        love.graphics.print(k, 20, y)
+    for k, map in pairs(self.loaded) do
+        love.graphics.print(k .. " (" .. map.id .. ")", 20, y)
         y = y + 20
     end
 end
