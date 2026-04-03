@@ -7,18 +7,20 @@ Runtime world streaming manager that loads and unloads map chunks around the pla
 ## Current Behavior
 
 - Stores a map database instance and a loaded-map cache keyed by grid coordinates.
+- Stores the shared Bump world reference used during map collision build.
 - Uses config-driven chunk dimensions (`Config.world.chunk_width`, `Config.world.chunk_height`) for world partitioning.
 - Computes the player's current grid cell from world position.
 - Loads a dynamic 3x3 set of maps centered on the player cell.
-- Calls `onLoad()` when a map enters the active window and `onUnload()` when it leaves.
-- Draws all loaded map chunks in world-space using each map color.
+- Calls `onLoad(world)` when a map enters the active window and `onUnload()` when it leaves.
+- Updates all loaded maps each frame to advance per-map runtime behavior.
+- Draws all loaded map chunks in world-space through map draw calls.
 - Prints currently loaded grid keys for debug visibility.
 
 ## API
 
-- `MapManager.new(map_database)`
+- `MapManager.new(map_database, world)`
 - `MapManager:get_map_at(gx, gy)`
-- `MapManager:update(player)`
+- `MapManager:update(player, dt)`
 - `MapManager:draw_world()`
 - `MapManager:draw()`
 

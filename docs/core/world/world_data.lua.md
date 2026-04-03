@@ -14,6 +14,7 @@ World data bootstrap module that creates the map database and registers the curr
 
 - Each map is created through `core.world.map`.
 - The data table currently includes id, grid, source, region, weather, BGM, and debug color fields.
+- The center map currently points to `assets/Tilemaps/Test_map.tmj`.
 
 ## Dependencies
 

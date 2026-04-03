@@ -4,9 +4,11 @@ local Keybindings = require("core.keybindings")
 local Player = require("entity.player.player")
 
 local MapManager = require("core.world.map_manager")
-local WorldDB = require("core.world.world_data") -- ✅ FIXED
+local WorldDB = require("core.world.world_data")
 
 local Camera = require("core.camera")
+
+local bump = require("lib.bump")
 
 local Game = {}
 
@@ -24,11 +26,14 @@ function Game:load()
     self.input = Input:new()
     Keybindings.load(self.input)
 
-    -- player now in world space
+    -- 🧱 BUMP WORLD (CRITICAL)
+    self.world = bump.newWorld(16)
+
+    -- player in world space
     self.player = Player.new(0, 0, Config.character)
 
-    -- ✅ PASS INSTANCE (not class)
-    self.map_manager = MapManager.new(WorldDB)
+    -- 🔥 PASS WORLD INTO MAP MANAGER
+    self.map_manager = MapManager.new(WorldDB, self.world)
 
     self.camera = Camera.new()
 end
@@ -36,8 +41,8 @@ end
 function Game:update(dt)
     self.player:update(self.input, dt)
 
-    -- 🔥 dynamic map streaming
-    self.map_manager:update(self.player)
+    -- 🔥 streaming + animation update
+    self.map_manager:update(self.player, dt)
 
     -- camera follow
     self.camera:follow(self.player, dt)
@@ -48,10 +53,10 @@ end
 function Game:draw()
     self.camera:apply()
 
-    -- world
+    -- 🌍 world rendering (now real tiles, not rectangles)
     self.map_manager:draw_world()
 
-    -- player
+    -- 👤 player
     self.player:draw()
 
     self.camera:clear()
@@ -59,4 +64,5 @@ function Game:draw()
     -- debug
     self.map_manager:draw()
 end
+
 return Game

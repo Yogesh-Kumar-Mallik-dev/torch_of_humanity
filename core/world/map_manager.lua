@@ -3,11 +3,12 @@ local Config = require("config")
 local MapManager = {}
 MapManager.__index = MapManager
 
-function MapManager.new(database)
+function MapManager.new(database, world)
     local self = setmetatable({}, MapManager)
 
     self.database = database
     self.loaded = {}
+    self.world = world
 
     self.map_w = Config.world.chunk_width
     self.map_h = Config.world.chunk_height
@@ -15,17 +16,11 @@ function MapManager.new(database)
     return self
 end
 
--- =============================
--- O(1) lookup
--- =============================
 function MapManager:get_map_at(gx, gy)
     return self.database:get(gx, gy)
 end
 
--- =============================
--- Update (3x3 streaming)
--- =============================
-function MapManager:update(player)
+function MapManager:update(player, dt)
     local px = player.position.x
     local py = player.position.y
 
@@ -46,7 +41,7 @@ function MapManager:update(player)
                 needed[key] = true
 
                 if not self.loaded[key] then
-                    map:onLoad()
+                    map:onLoad(self.world)
                     self.loaded[key] = map
                 end
             end
@@ -60,26 +55,19 @@ function MapManager:update(player)
             self.loaded[key] = nil
         end
     end
+
+    -- update loaded maps
+    for _, map in pairs(self.loaded) do
+        map:update(dt)
+    end
 end
 
--- =============================
--- Draw world
--- =============================
 function MapManager:draw_world()
     for _, map in pairs(self.loaded) do
-        local x = map.grid.x * self.map_w
-        local y = map.grid.y * self.map_h
-
-        love.graphics.setColor(map.color)
-        love.graphics.rectangle("fill", x, y, self.map_w, self.map_h)
+        map:draw(self.map_w, self.map_h)
     end
-
-    love.graphics.setColor(1,1,1)
 end
 
--- =============================
--- Debug
--- =============================
 function MapManager:draw()
     local y = 20
     love.graphics.print("Loaded maps:", 20, y)

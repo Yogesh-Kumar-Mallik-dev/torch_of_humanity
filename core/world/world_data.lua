@@ -1,4 +1,3 @@
--- world_data.lua
 local Map = require("core.world.map")
 local MapDatabase = require("core.world.map_database")
 
@@ -9,7 +8,7 @@ db:add(Map:new({
     name = "Central Plains",
     grid = {x = 0, y = 0},
 
-    source = "maps/center.lua",
+    source = "assets/Tilemaps/Test_map.tmj",
 
     region = "grassland",
     weathers = {"clear", "rain"},
